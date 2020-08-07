@@ -1,12 +1,10 @@
 import requests
-from bs4 import BeautifulSoup
 import time
 import random
 import datetime
 import os 
 import sys
 import getopt
-import re
 
 def fetchComics(start_date, end_date):
 
@@ -14,11 +12,7 @@ def fetchComics(start_date, end_date):
 
 		date = (start_date - datetime.timedelta(i)).strftime("%Y-%m-%d")
 
-		html = requests.get(f"https://www.gocomics.com/garfield/{date[:4]}/{date[5:7]}/{date[8:10]}")
-		soup = BeautifulSoup(html.text, "html.parser")
-		div = str(soup.findAll("picture", {"class": "item-comic-image"})[0])
-		url = re.search(r"src=\"(.*)\" srcset", div).group(1)
-		image = requests.get(url)
+		image = requests.get(f"https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/{date[:4]}/{date}.gif?v=1.1")
 
 		with open("comics/" + date + ".png", "wb") as f:
 			f.write(image.content)
